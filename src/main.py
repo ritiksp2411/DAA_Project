@@ -3,7 +3,7 @@ import random
 
 def calc_num(n):
     ans = n*(n-1)/2
-    return ans
+    return int(ans)
 
 def find_num(n):
     ans = 2**calc_num(n)
@@ -70,7 +70,7 @@ def calc_reliability2(edge_mat, num_nodes, p):
 
         if connected(adj_mat, num_nodes):
             comb_reliability += get_reliability2(i, p)
-    print "The reliabilty for this combination is: ", comb_reliability
+    return comb_reliability
 
 def get_reliability2(edge_mat, p):
     rel = 1.0
@@ -98,24 +98,38 @@ def run_exp1(edge_mat, num_nodes):
 
 def run_exp2(edge_mat, num_nodes, p):
     print 'Reliability'
-    calc_reliability2(edge_mat, num_nodes, p)
+    comb_reliability = calc_reliability2(edge_mat, num_nodes, p)
+    print "The reliabilty for this combination is: ", comb_reliability
     print
 
+def run_exp3(edge_mat, num_nodes, p, q):
+    a = []
+    for i in range(calc_num(num_nodes)):
+        a.append(p)
+    comb_reliability = calc_reliability2(edge_mat, num_nodes, a)
+    if(comb_reliability>=q):
+        print "YES\n"
+    else:
+        print "NO\n"
+
+
+
 def main():
-    ch = int(raw_input('''Enter your choice
-        1. Give custom probabilty for each edge
+    ch = int(input('''Enter your choice
+        1. Give custom probabilty for each edge.
         2. Calculate the reliabilty for each probabilty.
-        3. Exit\n'''))
+        3. Decision version of problem.
+        4. Exit.\n'''))
 
     if ch == 1:
-        num_nodes = int(raw_input("Enter the number of nodes: "))
+        num_nodes = int(input("Enter the number of nodes: "))
         if(num_nodes < 0):
             print "Invalid number of nodes"
             exit(0)
         edge_mat = make_combination(num_nodes)
         p = []
         for i in range(calc_num(num_nodes)):
-            x = float(raw_input("Enter probabilty of edge " + str(i+1) + ": "))
+            x = float(input("Enter probabilty of link " + str(i+1) + ": "))
             if(0>x or x> 1):
                 print "Invalid probabilty"
                 exit(0)
@@ -123,12 +137,22 @@ def main():
         run_exp2(edge_mat, num_nodes, p)
     
     elif ch == 2:
-        num_nodes = int(raw_input("Enter the number of nodes: "))
+        num_nodes = int(input("Enter the number of nodes: "))
         if(num_nodes < 0):
             print "Invalid number of nodes"
             exit(0)
         edge_mat = make_combination(num_nodes)
         run_exp1(edge_mat, num_nodes)
+
+    elif ch == 3:
+        num_nodes = int(input("Enter the number of nodes: "))
+        if(num_nodes < 0):
+            print "Invalid number of nodes"
+            exit(0)
+        edge_mat = make_combination(num_nodes)
+        p = float(input("Enter the probabitly of link: "))
+        q = float(input("Enter the expected minimum reliabilty: "))
+        run_exp3(edge_mat, num_nodes, p, q)
 
     else:
         print "Goodbye!"
