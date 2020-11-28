@@ -60,12 +60,15 @@ def calc_reliability2(edge_mat, num_nodes, p):
 			if adj_j == num_nodes and adj_i < num_nodes-2:
 				adj_i=adj_i+1
 				adj_j=adj_i+1
+				
 			if adj_j <= num_nodes-1:
 				adj_mat[adj_i][adj_j] = i[j]
 				adj_mat[adj_j][adj_i] = i[j]
 				adj_j += 1
+
 		if connected(adj_mat, num_nodes):
 			comb_reliability += get_reliability2(i, p)
+			
 	return comb_reliability
 
 def get_reliability2(edge_mat, p):
